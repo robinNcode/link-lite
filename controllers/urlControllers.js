@@ -8,6 +8,8 @@ const idString = (id) => id.toString(36).padStart(8, "0");
  */
 exports.generateShortUrl = async (request, response) => {
     const { longUrl } = request.body;
+    console.log(request);
+
     if (!longUrl) {
         return response.status(400).json({
             type: 'error',
