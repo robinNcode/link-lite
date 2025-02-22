@@ -8,7 +8,7 @@ const idString = (id) => id.toString(36).padStart(8, "0");
  */
 exports.generateShortUrl = async (request, response) => {
     const { longUrl } = request.body;
-    console.log(request);
+    console.log(longUrl);
 
     if (!longUrl) {
         return response.status(400).json({
@@ -33,7 +33,10 @@ exports.generateShortUrl = async (request, response) => {
         response.status(201).json({
             type: 'success',
             message: 'Short URL generated successfully!',
-            data: newUrl
+            data: {
+                shortUrl: shortUrl,
+                longUrl: longUrl
+            }
         });
     }
     catch(err){
