@@ -60,10 +60,10 @@
         if (apiResponse.type === 'error') {
             document.getElementById('result').innerHTML = `<div class="alert alert-danger">${apiResponse.message}</div>`;
         } else {
-            let shortUrlApi = `${process.env.BASE_URL}/redirect/${apiResponse.data.shortUrl}`;
+            let shortUrlApi = `${apiResponse.data.redirectUrl}/${apiResponse.data.shortUrl}`;
             document.getElementById('result').innerHTML = `
                 <div class="alert alert-success">
-                    <p>Shortened URL: <a href="${shortUrlApi}" target="_blank">${apiResponse.data.shortUrl}</a></p>
+                    <p>Shortened URL: <a href="${shortUrlApi}" target="_blank">${shortUrlApi}</a></p>
                     <p>Original URL: <a href="${apiResponse.data.longUrl}" target="_blank">${apiResponse.data.longUrl}</a></p>
                 </div>
             `;
