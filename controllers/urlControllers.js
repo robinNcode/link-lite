@@ -74,11 +74,11 @@ exports.generateShortUrl = async (request, response) => {
  * Redirect to long url from short url
  */
 exports.redirectToLongUrl = async (request, response) => {
-    console.log(request.params);
-    const { shortUrl } = request.params;
+    const  shortUrl = request.params.shortUrl;
 
+    console.log(shortUrl);
     try {
-        const urlEntry = await urlModel.findOne({short_url});
+        const urlEntry = await urlModel.findOne({short_url: shortUrl});
 
         if (!urlEntry) {
             return response.status(404).json({
@@ -86,6 +86,7 @@ exports.redirectToLongUrl = async (request, response) => {
                 message: 'URL not found!'
             });
         }
+
         response.status(301).redirect(urlEntry.long_url);
     }
     catch(err){

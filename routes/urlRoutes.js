@@ -7,6 +7,6 @@ const router = express.Router();
 router.post('/generate', generateShortUrl);
 
 // Redirect to long url route ...
-router.get('/redirect', redirectToLongUrl);
+router.get('/redirect/:shortUrl([a-zA-Z0-9_-]+)', redirectToLongUrl);
 
 module.exports = router;
