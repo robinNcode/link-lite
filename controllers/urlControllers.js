@@ -23,8 +23,9 @@ const idString = (id) => {
  * Generating short url ...
  */
 exports.generateShortUrl = async (request, response) => {
+    const BASE_URL = process.env.APP_ENV === 'production' ? process.env.BASE_URL : process.env.DEV_BASE_URL;
     const { longUrl } = request.body;
-    console.log(longUrl);
+
 
     if (!longUrl) {
         return response.status(400).json({
@@ -56,7 +57,7 @@ exports.generateShortUrl = async (request, response) => {
             data: {
                 shortUrl: shortUrl,
                 longUrl: longUrl,
-                redirectUrl: process.env.BASE_URL +  '/api/url/redirect',
+                redirectUrl: BASE_URL +  '/api/url/redirect',
                 insertedAt: insertedAt
             }
         });
