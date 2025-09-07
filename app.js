@@ -19,8 +19,8 @@ app.use(cors(corsOptions));
 
 
 // Connect to MongoDB
-connectDB().then(r => console.log("MongoDB Connected"))
-    .catch(err => console.error("MongoDB Connection Error: ", err.message));
+// connectDB().then(r => console.log("MongoDB Connected"))
+//     .catch(err => console.error("MongoDB Connection Error: ", err.message));
 
 // Static folder setup
 app.use(express.static('public'));
@@ -34,7 +34,7 @@ app.set("views", path.join(__dirname, "views"));
 app.get("/", homeView);
 
 // API Routes
-app.use("/api/url", urlRoutes);
+// app.use("/api/url", urlRoutes);
 
 // Start server
 const PORT = process.env.PORT || 3000;
