@@ -34,7 +34,7 @@ app.set("views", path.join(__dirname, "views"));
 app.get("/", homeView);
 
 // API Routes
-// app.use("/api/url", urlRoutes);
+app.use("/api/url", urlRoutes);
 
 // Start server
 const PORT = process.env.PORT || 3000;

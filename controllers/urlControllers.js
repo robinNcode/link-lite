@@ -1,4 +1,5 @@
 const urlModel = require('../models/urlModel');
+const { getApiUrl } = require('../config/common');
 
 // Converting id to 8characters string
 const idString = (id) => {
@@ -23,7 +24,7 @@ const idString = (id) => {
  * Generating short url ...
  */
 exports.generateShortUrl = async (request, response) => {
-    const BASE_URL = process.env.APP_ENV === 'production' ? process.env.BASE_URL : process.env.DEV_BASE_URL;
+    const API_URL = getApiUrl();
     const { longUrl } = request.body;
 
 
@@ -57,7 +58,7 @@ exports.generateShortUrl = async (request, response) => {
             data: {
                 shortUrl: shortUrl,
                 longUrl: longUrl,
-                redirectUrl: BASE_URL +  '/api/url/redirect/' + shortUrl,
+                redirectUrl: API_URL +  '/api/url/redirect/' + shortUrl,
                 insertedAt: insertedAt
             }
         });

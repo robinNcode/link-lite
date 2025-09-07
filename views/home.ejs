@@ -41,12 +41,14 @@
     </div>
 
     <script>
+        const apiUrl = '<%= apiUrl %>';
+
         // Shorten URL form submit
         document.getElementById('shortUrlForm').addEventListener('submit', async function (e) {
             e.preventDefault();
 
             const longUrl = document.getElementById('longUrl').value;
-            const response = await fetch('/api/url/generate', {
+            const response = await fetch(`${apiUrl}/api/url/generate`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
