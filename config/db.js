@@ -1,14 +1,9 @@
+const { getDbUrl } = require("./common");
 const mongoose = require("mongoose");
 
 const connectDB = async () => {
     try {
-        let connectionURI;
-        if (process.env.APP_ENV === 'production') {
-            connectionURI = process.env.MONGO_URI_PROD;
-        } else {
-            connectionURI = process.env.MONGO_URI;
-        }
-
+        let connectionURI = getDbUrl();
         await mongoose.connect(connectionURI); // Removed deprecated options
     } catch (err) {
         console.error("MongoDB Connection Error: ", err.message);
