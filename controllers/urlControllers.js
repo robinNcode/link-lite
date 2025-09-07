@@ -57,7 +57,7 @@ exports.generateShortUrl = async (request, response) => {
             data: {
                 shortUrl: shortUrl,
                 longUrl: longUrl,
-                redirectUrl: BASE_URL +  '/api/url/redirect',
+                redirectUrl: BASE_URL +  '/api/url/redirect/' + shortUrl,
                 insertedAt: insertedAt
             }
         });

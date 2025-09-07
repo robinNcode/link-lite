@@ -19,8 +19,8 @@ app.use(cors(corsOptions));
 
 
 // Connect to MongoDB
-// connectDB().then(r => console.log("MongoDB Connected"))
-//     .catch(err => console.error("MongoDB Connection Error: ", err.message));
+connectDB().then(r => console.log(process.env.APP_ENV + ": MongoDB Connected Successfully!"))
+    .catch(err => console.error("MongoDB Connection Error: ", err.message));
 
 // Static folder setup
 app.use(express.static('public'));
