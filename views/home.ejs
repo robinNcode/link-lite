@@ -5,8 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title><%= title %></title>
 
-    <!-- Bootstrap 5 CSS (CDN) -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Tailwind CSS (CDN) -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
     <!-- Optional: Custom CSS -->
     <style>
@@ -17,58 +18,78 @@
 </head>
 <body>
 
-<div class="container mt-5">
-    <h1 class="bg-white text-success text-center">Welcome To Link-lite !!!</h1>
+<body class="bg-gray-100">
 
-    <!-- Card for Shorten URL form -->
-    <div class="card">
-        <div class="card-header bg-info text-white">
-            A fast and efficient URL shortener with secure, one-time-use links for simplified sharing.
-        </div>
-        <div class="card-body">
-            <form id="shortUrlForm">
-                <div class="mb-3">
-                    <label for="longUrl" class="form-label">Enter URL</label>
-                    <input type="url" class="form-control" id="longUrl" name="longUrl" required>
-                </div>
-                <button type="submit" class="btn btn-primary">Shorten URL</button>
-            </form>
+<div class="container mx-auto mt-10 p-5">
+    <div class="bg-white shadow-md rounded-lg p-8">
+        <h1 class="text-3xl font-bold text-center text-gray-800 mb-2">Link-lite</h1>
+        <p class="text-center text-gray-500 mb-8">A fast and efficient URL shortener with secure, one-time-use links for simplified sharing.</p>
 
-            <div id="result" class="mt-3"></div>
-        </div>
+        <form id="shortUrlForm" class="flex flex-col sm:flex-row items-center gap-4">
+            <input type="url" id="longUrl" name="longUrl" class="flex-grow w-full px-4 py-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter a long URL to shorten" required>
+            <button type="submit" class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition duration-300"><i class="fas fa-paper-plane"></i></button>
+        </form>
+
+        <div id="result" class="mt-6"></div>
     </div>
 </div>
 
-<!-- Bootstrap 5 JS (CDN) -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
 <script>
     // Shorten URL form submit
+    const shortenedUrls = [];
+
     document.getElementById('shortUrlForm').addEventListener('submit', async function (e) {
         e.preventDefault();
 
         const longUrl = document.getElementById('longUrl').value;
-        const response = await fetch('/api/url/generate', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ longUrl })
-        });
 
-        const apiResponse = await response.json();
-        console.log(apiResponse);
-        if (apiResponse.type === 'error') {
-            document.getElementById('result').innerHTML = `<div class="alert alert-danger">${apiResponse.message}</div>`;
-        } else {
-            let shortUrlApi = `${apiResponse.data.redirectUrl}/${apiResponse.data.shortUrl}`;
+        const existingUrl = shortenedUrls.find(url => url.longUrl === longUrl);
+
+        if (existingUrl) {
             document.getElementById('result').innerHTML = `
-                <div class="alert alert-success">
-                    <p>Shortened URL: <a href="${shortUrlApi}" target="_blank">${shortUrlApi}</a></p>
-                    <p>Original URL: <a href="${apiResponse.data.longUrl}" target="_blank">${apiResponse.data.longUrl}</a></p>
+                <div class="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded relative">
+                    <p class="font-bold">URL already shortened:</p>
+                    <a href="${existingUrl.shortUrl}" target="_blank" class="text-blue-500 hover:underline">${existingUrl.shortUrl}</a>
                 </div>
             `;
+            return;
         }
+
+        const shortUrl = "https://short.url/" + Math.random().toString(36).substring(2, 8);
+        shortenedUrls.push({ longUrl, shortUrl });
+
+        document.getElementById('result').innerHTML = `
+            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <p class="font-bold">Shortened URL:</p>
+                        <a href="${shortUrl}" target="_blank" class="text-blue-500 hover:underline">${shortUrl}</a>
+                    </div>
+                    <button onclick="copyToClipboard('${shortUrl}')" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                        <i class="fas fa-copy"></i>
+                    </button>
+                </div>
+                <div class="flex justify-between items-center mt-2">
+                    <div>
+                        <p class="text-sm mt-2">Original URL:</p>
+                        <a href="${longUrl}" target="_blank" class="text-gray-500 hover:underline">${longUrl}</a>
+                    </div>
+                    <button onclick="copyToClipboard('${longUrl}')" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
+                        <i class="fas fa-copy"></i>
+                    </button>
+                </div>
+            </div>
+        `;
     });
+
+    function copyToClipboard(text) {
+        navigator.clipboard.writeText(text).then(function() {
+            alert('Copied to clipboard!');
+        }, function(err) {
+            alert('Could not copy text: ', err);
+        });
+    }
 </script>
 </body>
 </html>
