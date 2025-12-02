@@ -66,6 +66,9 @@
                         <p class="font-bold">Shortened URL:</p>
                         <a href="${shortUrl}" target="_blank" class="text-blue-500 hover:underline">${shortUrl}</a>
                     </div>
+                    <button onclick="window.open('${shortUrl}', '_blank')" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                        <i class="fas fa-link"></i>
+                    </button>
                     <button onclick="copyToClipboard('${shortUrl}')" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                         <i class="fas fa-copy"></i>
                     </button>
@@ -75,6 +78,9 @@
                         <p class="text-sm mt-2">Original URL:</p>
                         <a href="${longUrl}" target="_blank" class="text-gray-500 hover:underline">${longUrl}</a>
                     </div>
+                    <button onclick="window.open('${longUrl}', '_blank')" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
+                        <i class="fas fa-link"></i>
+                    </button>
                     <button onclick="copyToClipboard('${longUrl}')" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
                         <i class="fas fa-copy"></i>
                     </button>
