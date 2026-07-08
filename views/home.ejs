@@ -4,92 +4,171 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title><%= title %></title>
-
-    <!-- Tailwind CSS (CDN) -->
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-
-    <!-- Optional: Custom CSS -->
-    <style>
-        body {
-            background-color: #f8f9fa;
-        }
-    </style>
 </head>
-<body>
-
-<body class="bg-gray-100">
-
-<div class="container mx-auto mt-10 p-5">
-    <div class="bg-white shadow-md rounded-lg p-8">
-        <h1 class="text-3xl font-bold text-center text-gray-800 mb-2">Link-lite</h1>
-        <p class="text-center text-gray-500 mb-8">A fast and efficient URL shortener with secure, one-time-use links for simplified sharing.</p>
-
-        <form id="shortUrlForm" class="flex flex-col sm:flex-row items-center gap-4">
-            <input type="url" id="longUrl" name="longUrl" class="flex-grow w-full px-4 py-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter a long URL to shorten" required>
-            <button type="submit" class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition duration-300"><i class="fas fa-paper-plane"></i></button>
-        </form>
-
-        <div id="result" class="mt-6"></div>
-    </div>
-</div>
-
-
-<script>
-    // Shorten URL form submit
-    const shortenedUrls = [];
-
-    document.getElementById('shortUrlForm').addEventListener('submit', async function (e) {
-        e.preventDefault();
-
-        const longUrl = document.getElementById('longUrl').value;
-
-        const existingUrl = shortenedUrls.find(url => url.longUrl === longUrl);
-
-        if (existingUrl) {
-            document.getElementById('result').innerHTML = `
-                <div class="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded relative">
-                    <p class="font-bold">URL already shortened:</p>
-                    <a href="${existingUrl.shortUrl}" target="_blank" class="text-blue-500 hover:underline">${existingUrl.shortUrl}</a>
+<body class="min-h-screen bg-slate-950 text-slate-100">
+    <div class="mx-auto flex min-h-screen max-w-6xl flex-col px-4 py-8 sm:px-6 lg:px-8">
+        <header class="mb-8 rounded-3xl border border-white/10 bg-white/10 p-6 shadow-2xl backdrop-blur">
+            <div class="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+                <div>
+                    <p class="mb-2 text-sm font-semibold uppercase tracking-[0.3em] text-cyan-300">Link-lite</p>
+                    <h1 class="text-3xl font-semibold sm:text-4xl">Turn long links into polished shortcuts.</h1>
+                    <p class="mt-3 max-w-2xl text-sm text-slate-300 sm:text-base">Create a shareable short link in seconds, copy it instantly, and keep your most-used links handy.</p>
                 </div>
-            `;
-            return;
-        }
-
-        const shortUrl = "https://short.url/" + Math.random().toString(36).substring(2, 8);
-        shortenedUrls.push({ longUrl, shortUrl });
-
-        document.getElementById('result').innerHTML = `
-            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative">
-                <div class="flex justify-between items-center">
-                    <div>
-                        <p class="font-bold">Shortened URL:</p>
-                        <a href="${shortUrl}" target="_blank" class="text-blue-500 hover:underline">${shortUrl}</a>
-                    </div>
-                    <button onclick="copyToClipboard('${shortUrl}')" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                        <i class="fas fa-copy"></i>
-                    </button>
-                </div>
-                <div class="flex justify-between items-center mt-2">
-                    <div>
-                        <p class="text-sm mt-2">Original URL:</p>
-                        <a href="${longUrl}" target="_blank" class="text-gray-500 hover:underline">${longUrl}</a>
-                    </div>
-                    <button onclick="copyToClipboard('${longUrl}')" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
-                        <i class="fas fa-copy"></i>
-                    </button>
+                <div class="rounded-2xl border border-cyan-400/30 bg-cyan-500/10 px-4 py-3 text-sm text-cyan-100">
+                    <p class="font-semibold">Fast • Clean • Reliable</p>
                 </div>
             </div>
-        `;
-    });
+        </header>
 
-    function copyToClipboard(text) {
-        navigator.clipboard.writeText(text).then(function() {
-            alert('Copied to clipboard!');
-        }, function(err) {
-            alert('Could not copy text: ', err);
+        <main class="grid flex-1 gap-6 lg:grid-cols-[1.2fr_0.8fr]">
+            <section class="rounded-3xl border border-white/10 bg-slate-900/80 p-6 shadow-2xl backdrop-blur">
+                <form id="shortUrlForm" class="space-y-4">
+                    <label for="longUrl" class="block text-sm font-medium text-slate-300">Paste a long URL</label>
+                    <div class="flex flex-col gap-3 sm:flex-row">
+                        <input id="longUrl" name="longUrl" type="url" required placeholder="https://example.com/very/long/path" class="w-full rounded-2xl border border-slate-700 bg-slate-800 px-4 py-3 text-slate-100 outline-none ring-0 transition focus:border-cyan-400">
+                        <button type="submit" class="rounded-2xl bg-cyan-500 px-5 py-3 font-semibold text-slate-950 transition hover:bg-cyan-400">
+                            <i class="fas fa-paper-plane mr-2"></i>Shorten
+                        </button>
+                    </div>
+                    <p class="text-sm text-slate-400">Use a full URL starting with http:// or https://.</p>
+                </form>
+
+                <div id="statusMessage" class="mt-5 hidden rounded-2xl border border-slate-700 bg-slate-800/80 p-4 text-sm"></div>
+                <div id="result" class="mt-5"></div>
+            </section>
+
+            <aside class="space-y-6">
+                <div class="rounded-3xl border border-white/10 bg-slate-900/80 p-6 shadow-2xl backdrop-blur">
+                    <h2 class="text-lg font-semibold">Recent links</h2>
+                    <p class="mt-2 text-sm text-slate-400">Your latest shortened links appear here for quick reuse.</p>
+                    <div id="recentLinks" class="mt-4 space-y-3"></div>
+                </div>
+
+                <div class="rounded-3xl border border-white/10 bg-gradient-to-br from-cyan-500/20 to-violet-500/20 p-6 shadow-2xl backdrop-blur">
+                    <h2 class="text-lg font-semibold">Why teams love it</h2>
+                    <ul class="mt-4 space-y-3 text-sm text-slate-300">
+                        <li><i class="fas fa-bolt mr-2 text-cyan-300"></i>Instant shortening</li>
+                        <li><i class="fas fa-copy mr-2 text-cyan-300"></i>One-tap copying</li>
+                        <li><i class="fas fa-shield-alt mr-2 text-cyan-300"></i>Safer sharing experience</li>
+                    </ul>
+                </div>
+            </aside>
+        </main>
+    </div>
+
+    <script>
+        const form = document.getElementById('shortUrlForm');
+        const input = document.getElementById('longUrl');
+        const result = document.getElementById('result');
+        const statusMessage = document.getElementById('statusMessage');
+        const recentLinks = document.getElementById('recentLinks');
+        const storageKey = 'linkLiteRecentLinks';
+
+        function renderRecent() {
+            const items = JSON.parse(localStorage.getItem(storageKey) || '[]');
+            if (!items.length) {
+                recentLinks.innerHTML = '<p class="rounded-2xl border border-dashed border-slate-700 p-3 text-sm text-slate-400">No links yet. Shorten one to see it here.</p>';
+                return;
+            }
+
+            recentLinks.innerHTML = items.map((item) => `
+                <div class="rounded-2xl border border-slate-800 bg-slate-800/70 p-3">
+                    <p class="truncate text-sm font-medium text-slate-100">${item.shortUrl}</p>
+                    <p class="mt-1 truncate text-xs text-slate-400">${item.longUrl}</p>
+                    <div class="mt-3 flex gap-2">
+                        <button data-copy="${item.shortUrl}" class="rounded-lg bg-slate-700 px-3 py-2 text-xs text-slate-200 transition hover:bg-slate-600">Copy</button>
+                        <a href="${item.shortUrl}" target="_blank" rel="noreferrer" class="rounded-lg bg-cyan-500 px-3 py-2 text-xs font-semibold text-slate-950 transition hover:bg-cyan-400">Open</a>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function setStatus(type, title, message) {
+            statusMessage.className = 'mt-5 rounded-2xl border p-4 text-sm';
+            if (type === 'success') {
+                statusMessage.classList.add('border-emerald-500/30', 'bg-emerald-500/10', 'text-emerald-200');
+            } else {
+                statusMessage.classList.add('border-rose-500/30', 'bg-rose-500/10', 'text-rose-200');
+            }
+            statusMessage.innerHTML = `<p class="font-semibold">${title}</p><p class="mt-1">${message}</p>`;
+            statusMessage.classList.remove('hidden');
+        }
+
+        async function copyText(text) {
+            try {
+                await navigator.clipboard.writeText(text);
+                setStatus('success', 'Copied!', 'Your link is ready to share.');
+            } catch (error) {
+                setStatus('error', 'Copy failed', 'Clipboard access was blocked.');
+            }
+        }
+
+        function storeRecent(item) {
+            const items = JSON.parse(localStorage.getItem(storageKey) || '[]');
+            const updated = [item, ...items.filter((entry) => entry.shortUrl !== item.shortUrl)].slice(0, 4);
+            localStorage.setItem(storageKey, JSON.stringify(updated));
+            renderRecent();
+        }
+
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const longUrl = input.value.trim();
+
+            result.innerHTML = '<div class="rounded-2xl border border-slate-700 bg-slate-800/70 p-4 text-sm text-slate-300">Creating your link...</div>';
+
+            try {
+                const response = await fetch('/api/url/generate', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ longUrl })
+                });
+
+                const json = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(json.message || 'Unable to shorten URL.');
+                }
+
+                const { shortUrl, longUrl: originalUrl } = json.data;
+                const card = `
+                    <div class="rounded-2xl border border-emerald-500/30 bg-emerald-500/10 p-4">
+                        <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                            <div>
+                                <p class="text-sm font-semibold text-emerald-200">Shortened URL</p>
+                                <a href="${shortUrl}" target="_blank" rel="noreferrer" class="mt-2 block break-all text-lg font-semibold text-cyan-300 hover:text-cyan-200">${shortUrl}</a>
+                            </div>
+                            <div class="flex gap-2">
+                                <button data-copy="${shortUrl}" class="rounded-xl bg-slate-900 px-3 py-2 text-sm text-slate-100 transition hover:bg-slate-800"><i class="fas fa-copy mr-2"></i>Copy</button>
+                                <a href="${shortUrl}" target="_blank" rel="noreferrer" class="rounded-xl bg-cyan-500 px-3 py-2 text-sm font-semibold text-slate-950 transition hover:bg-cyan-400"><i class="fas fa-arrow-up-right-from-square mr-2"></i>Open</a>
+                            </div>
+                        </div>
+                        <div class="mt-4 rounded-2xl border border-slate-700 bg-slate-900/60 p-3">
+                            <p class="text-xs uppercase tracking-[0.2em] text-slate-400">Original URL</p>
+                            <p class="mt-2 break-all text-sm text-slate-200">${originalUrl}</p>
+                        </div>
+                    </div>
+                `;
+
+                result.innerHTML = card;
+                storeRecent({ shortUrl, longUrl: originalUrl });
+                setStatus('success', 'Link created', 'Your short link is ready to share.');
+                input.value = '';
+            } catch (error) {
+                result.innerHTML = '<div class="rounded-2xl border border-rose-500/30 bg-rose-500/10 p-4 text-sm text-rose-200">' + error.message + '</div>';
+                setStatus('error', 'Something went wrong', error.message);
+            }
         });
-    }
-</script>
+
+        document.addEventListener('click', (event) => {
+            const button = event.target.closest('[data-copy]');
+            if (button) {
+                copyText(button.getAttribute('data-copy'));
+            }
+        });
+
+        renderRecent();
+    </script>
 </body>
 </html>

@@ -9,10 +9,15 @@ const connectDB = async () => {
             connectionURI = process.env.MONGO_URI;
         }
 
-        await mongoose.connect(connectionURI); // Removed deprecated options
+        if (!connectionURI) {
+            throw new Error("MongoDB connection string is not configured.");
+        }
+
+        await mongoose.connect(connectionURI);
+        return true;
     } catch (err) {
-        console.error("MongoDB Connection Error: ", err.message);
-        process.exit(1);
+        console.warn("MongoDB unavailable, continuing with in-memory URL storage:", err.message);
+        return false;
     }
 };
 
